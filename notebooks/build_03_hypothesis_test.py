@@ -84,7 +84,7 @@ CELLS: list[dict[str, str]] = [
             "ax.set_xlim(-0.002, 0.013)\n"
             "ax.set_title('Observed difference with 95% confidence interval')\n"
             "ax.tick_params(axis='x', labelbottom=True)\n"
-            "ax.xaxis.set_major_formatter(lambda x, _: f'{x*100:.0f} pp')"
+            "ax.xaxis.set_major_formatter(lambda x, _: f'{x*100:.1f} pp')"
         ),
     },
     {
