@@ -16,6 +16,9 @@ CELLS: list[dict[str, str]] = [
             "**Stage 1** of the A/B experiment. Before any hypothesis test we\n"
             "verify the data can support a valid experiment (data integrity)\n"
             "and get familiar with its shape and scale (EDA).\n\n"
+            "**Status: EXPLORATORY (hypothesis-generating).** Nothing in this\n"
+            "notebook is a significance claim; hypotheses formed here are\n"
+            "tested only by the pre-registered analysis in notebook 03.\n\n"
             "**Unit of analysis (unit of analysis):** a row is exactly one\n"
             "user id (`user_id`), so conversion is always computed per user.\n"
         ),

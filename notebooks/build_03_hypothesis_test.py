@@ -22,7 +22,11 @@ CELLS: list[dict[str, str]] = [
             "**Stage 5.** Executes the pre-registered analysis: two-proportion\n"
             "z-test (two-sided, α = 0.05), 95% confidence interval for the\n"
             "difference, assumption checks. The decision rule is read from\n"
-            "`reports/pre_registration.md`, not invented after the fact.\n"
+            "`reports/pre_registration.md`, not invented after the fact.\n\n"
+            "**Status: CONFIRMATORY (pre-registered verification).** This is the\n"
+            "only stage whose verdict decides the pre-registered hypothesis; it\n"
+            "runs strictly after the planning in notebooks 01–02, with the\n"
+            "query fixed in advance.\n"
         ),
     },
     {

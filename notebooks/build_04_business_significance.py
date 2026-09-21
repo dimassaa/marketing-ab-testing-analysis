@@ -21,7 +21,10 @@ CELLS: list[dict[str, str]] = [
             "# 04 — Practical significance and business impact\n\n"
             "**Stage 6.** Translates the statistically significant result into\n"
             "business terms: relative uplift, additional converters across the\n"
-            "user base, and an illustrative revenue scenario.\n"
+            "user base, and an illustrative revenue scenario.\n\n"
+            "**Status: INTERPRETATION (post-hoc, decision-support).** Context\n"
+            "for the fixed confirmatory verdict in notebook 03, not a second\n"
+            "test: the hypothesis and its threshold are not re-chosen here.\n"
         ),
     },
     {

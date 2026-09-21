@@ -22,7 +22,10 @@ CELLS: list[dict[str, str]] = [
             "# 02 — Sample size, power curve, sensitivity\n\n"
             "**Stage 4.** Required sample size computed from the pre-registered\n"
             "parameters: H₁ two-sided, α = 0.05, power = 0.80, MDE = +0.5 p.p.,\n"
-            "baseline (control) conversion p₀ = 0.0179.\n"
+            "baseline (control) conversion p₀ = 0.0179.\n\n"
+            "**Status: PLANNING (pre-experiment).** This stage fixes the\n"
+            "decision rule and its feasibility; no data conclusions are drawn\n"
+            "from the observed samples here.\n"
         ),
     },
     {
