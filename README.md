@@ -52,7 +52,8 @@ Main contributions:
 - Two-sided z-test for proportions with Wald confidence interval, checked
   against `statsmodels`.
 - Business impact quantification with honest limits (observational cohort,
-  no cost data, a suspected confounder).
+  no cost data, an *evidenced* confounder via the `total_ads` stratification
+  check in notebook 06).
 
 The full reasoning behind every stage (why this approach, key terms,
 pitfalls) is documented in `notes/` (Russian, English key terms included).
@@ -210,12 +211,20 @@ reported before the result.
 | 95% CI for the difference | [+0.60, +0.94] p.p. |
 | Additional converters across all users (95% CI) | [3,500, 5,548] |
 
-Decision, applied strictly from the pre-registered rule: p < 0.05 **and** the
-lower CI bound (+0.60 p.p.) at least the MDE (+0.50 p.p.) — both hold.
+Decision, **before** the robustness check, applied strictly from the
+pre-registered rule: p < 0.05 **and** the lower CI bound (+0.60 p.p.) at
+least the MDE (+0.50 p.p.) — both hold for the pooled difference.
 
-**Verdict: adopt — provisionally.** Statistical and business significance are
-supported simultaneously; the caveats in [Limitations](#limitations) travel
-with the decision.
+**But the pooled effect is not uniform (notebook 06).** Stratifying by
+`total_ads` shows the ad advantage is concentrated in high-exposure users
+(21+ ads, especially 50+, where 63% of ad conversions live); among users with
+1–20 ads the difference is not significant. Removing the 50+ stratum drops
+the pooled difference from +0.77 to about +0.15 p.p. (not significant).
+
+**Verdict: do not adopt as a uniform effect.** A single causal ad advantage
+is not supported by this observational data — the signal is plausibly the
+confounder `total_ads` (exposure is not randomised). A rollout requires a
+randomised experiment or a properly adjusted (causal) analysis first.
 
 ## Business Impact
 
@@ -250,15 +259,17 @@ including cross-validation of the z-test and the sample-size formula against
   not proven causation.
 - No ad-cost data: only the upside is quantified; a final decision needs the
   cost side (marginal economics).
-- `total_ads` correlates with both exposure and conversion and is a suspected
-  confounder; a randomised or adjusted design is the proper follow-up.
+- `total_ads` is an **evidenced** confounder, not just a suspicion: the pooled
+  +0.77 p.p. does not survive stratification (notebook 06). A randomised or
+  properly adjusted (causal) design is required, not optional.
 - The benchmark data is synthetic — the reusable output is the method and the
   pipeline, not the absolute business figures.
 
 ## Recommendations
 
 - Run a prospective randomised test (or an adjusted observational analysis on
-  `total_ads`) before a real rollout.
+  `total_ads`) before any real rollout — the robustness evidence in notebook
+  06 is the reason this is mandatory, not precautionary.
 - Add revenue and ad-cost tracking to the experiment logging; re-evaluate
   with real economics.
 - Consider a sequential testing (group sequential design) framework if the
