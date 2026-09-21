@@ -7,11 +7,18 @@ business-significance evaluation.
 [Русская версия](README_ru.md)
 
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB)
-![Tests](https://img.shields.io/badge/tests-18%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-25%20passing-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![MDE](https://img.shields.io/badge/pre--registration-yes-blue)
 
 ![Observed difference with 95% confidence interval](assets/result_ci.png)
+
+> **TL;DR — verdict: do not adopt.** The pooled ad advantage (+0.77 p.p.,
+> p = 1.7e-13) is statistically significant **but not uniform**: a `total_ads`
+> stratification check (notebook 06) shows the effect is concentrated in
+> high-exposure users and plausibly reflects a confounder. Recommendation:
+> run a randomised test before any real rollout. Full reasoning:
+> `reports/05_executive_summary.html`.
 
 ## Table of Contents
 
@@ -22,6 +29,7 @@ business-significance evaluation.
 - [Detailed Installation and Usage](#detailed-installation-and-usage)
 - [Data](#data)
 - [Exploratory Data Analysis](#exploratory-data-analysis)
+- [Pre-registration](#pre-registration)
 - [Methodology](#methodology)
 - [Results](#results)
 - [Business Impact](#business-impact)
@@ -55,6 +63,18 @@ Main contributions:
   no cost data, an *evidenced* confounder via the `total_ads` stratification
   check in notebook 06).
 
+In a "day in the life", every analyst task maps to a tested artifact:
+
+| Task | Where it lives |
+| ---- | -------------- |
+| Data integrity check (unit of analysis, duplicates, missing, ranges) | `src/eda.py`, notebook 01 |
+| Power and sample-size planning *before* the data is judged | `src/inference.py`, notebook 02 |
+| Pre-registration of hypotheses and MDE | `reports/pre_registration.md` |
+| Confirmatory hypothesis test and confidence intervals | notebook 03 |
+| Business-significance translation | notebook 04 |
+| Confounder robustness (stratified check) | notebook 06 |
+| Stakeholder communication (executive summary) | `reports/05_executive_summary.html`, this README |
+
 The full reasoning behind every stage (why this approach, key terms,
 pitfalls) is documented in `notes/` (Russian, English key terms included).
 
@@ -75,7 +95,7 @@ pitfalls) is documented in `notes/` (Russian, English key terms included).
 ```
 ├── src/                  Reusable, tested analysis functions (eda, inference)
 ├── tests/                pytest coverage for src/
-├── notebooks/            EDA + statistical analysis (built from build_*.py, outputs embedded)
+├── notebooks/            Stages 01–06: EDA, planning, test, business, summary, robustness (built from build_*.py, outputs embedded)
 ├── reports/              Pre-registration plan + executive summary (HTML)
 ├── assets/               PNG figures reused by the README
 ├── notes/                Russian learning notes per stage
@@ -168,20 +188,18 @@ Cleaning: nothing to drop — a stray Kaggle index column is removed and
 > not a significance claim. Significance is decided by the pre-registered
 > test, which is run only after the plan is fixed.
 
-## Methodology
+## Pre-registration
 
-The plan is fixed before looking at results (`reports/pre_registration.md`):
-null hypothesis p_ad = p_psa, two-sided alternative, alpha = 0.05,
-power = 80%, minimum detectable effect (MDE) = +0.5 p.p., baseline
-conversion p0 = 0.0179 (observed psa rate, used as the pre-experiment
-baseline).
+The decision rule was written into `reports/pre_registration.md` at planning
+time, before any outcome was analysed; nothing in this project is tuned to
+the results.
 
-Required per-group sample size for a two-sided two-proportion z-test:
+> **Registered plan (excerpt):** H₀: p_ad = p_psa; H₁: p_ad ≠ p_psa
+> (two-sided). α = 0.05, target power = 0.80, MDE = +0.5 p.p., baseline
+> p_psa = 1.79%. Decision rule: adopt only if p < 0.05 **and** the effect
+> reaches the MDE — statistical significance alone never triggers adoption.
 
-$$n = \left( \frac{z_{1-\alpha/2}\sqrt{2\bar{p}(1-\bar{p})} +
-z_{1-\beta}\sqrt{p_0(1-p_0)+p_1(1-p_1)}}{p_1-p_0} \right)^2$$
-
-Where p1 = p0 + MDE, p_bar = (p0 + p1)/2.
+The experiment was adequately powered *before* the analysis ran:
 
 | Planning result | Value |
 | --------------- | ----- |
@@ -190,6 +208,16 @@ Where p1 = p0 + MDE, p_bar = (p0 + p1)/2.
 | Achieved power at the psa-group size | 0.97 |
 
 ![Power vs group size](assets/power_curve.png)
+
+## Methodology
+
+Closed-form per-group sample size for the pre-registered two-sided
+two-proportion z-test (parameters as fixed above):
+
+$$n = \left( \frac{z_{1-\alpha/2}\sqrt{2\bar{p}(1-\bar{p})} +
+z_{1-\beta}\sqrt{p_0(1-p_0)+p_1(1-p_1)}}{p_1-p_0} \right)^2$$
+
+Where p1 = p0 + MDE, p_bar = (p0 + p1)/2.
 
 Sensitivity analysis: resolving a +0.1 p.p. effect would need ~283K per group
 (infeasible with the available psa sample); +1 p.p. needs only ~3.5K. The
