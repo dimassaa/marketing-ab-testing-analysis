@@ -195,6 +195,8 @@ Sensitivity analysis: resolving a +0.1 p.p. effect would need ~283K per group
 (infeasible with the available psa sample); +1 p.p. needs only ~3.5K. The
 observed effect is well inside the resolvable range.
 
+![Required n vs MDE](assets/sensitivity_mde.png)
+
 The inference itself is a two-proportion z-test with a pooled variance under
 H0, plus a 95% Wald confidence interval for the difference. Assumptions
 (independence, n*p and n*(1-p) well above 5 in both groups) are checked and
@@ -220,6 +222,13 @@ least the MDE (+0.50 p.p.) — both hold for the pooled difference.
 (21+ ads, especially 50+, where 63% of ad conversions live); among users with
 1–20 ads the difference is not significant. Removing the 50+ stratum drops
 the pooled difference from +0.77 to about +0.15 p.p. (not significant).
+
+![Per-stratum ad advantage with 95% CIs](assets/strata_diff_ci.png)
+
+Note the honest reading of the chart: in the low/mid strata the CIs are wide
+or the cells are too sparse (expected events < 5) for a test — so this is
+evidence of a *concentrated* effect, not strong evidence that ad is worse
+there.
 
 **Verdict: do not adopt as a uniform effect.** A single causal ad advantage
 is not supported by this observational data — the signal is plausibly the
