@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ab-testing-stats"
+version = "0.1.0"
+description = "Reproducible A/B testing statistical analysis: power planning, pre-registration, inference and confounder-robustness checks"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.12"
+dependencies = [
+    "numpy>=2.0,<3",
+    "pandas>=2.2,<4",
+    "scipy>=1.14",
+    "statsmodels>=0.14",
+    "matplotlib>=3.9",
+    "seaborn>=0.13",
+    "nbformat>=5.10",
+    "nbclient>=0.10",
+    "ipykernel>=6",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+]
+
+# Modules live directly under src/ (flat layout); `import src.eda` works in
+# editable installs identically to the plain sys.path setup the notebooks
+# already use, so both usage modes stay consistent.
+[tool.setuptools]
+packages = ["src"]
