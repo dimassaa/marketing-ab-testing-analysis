@@ -111,3 +111,20 @@ def power_curve(
 ) -> np.ndarray:
     """Power across a grid of group sizes, for plotting (n -> power)."""
     return np.array([power_for_proportions(p0, p1, int(n), alpha) for n in n_grid])
+
+
+def n_req_vs_mde(
+    p0: float,
+    mdes: np.ndarray,
+    alpha: float = 0.05,
+    power: float = 0.8,
+) -> np.ndarray:
+    """Required per-group n for an array of MDE values.
+
+    Elementwise wrapper around sample_size_proportions so sensitivity charts
+    (required n vs MDE) are a one-liner instead of an inline loop. The result
+    is decreasing in MDE: smaller effects demand quadratically more data.
+    """
+    return np.array(
+        [sample_size_proportions(p0, float(m), alpha, power) for m in mdes]
+    )

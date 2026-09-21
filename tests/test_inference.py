@@ -11,6 +11,7 @@ from statsmodels.stats.proportion import proportion_effectsize
 
 from src.inference import (
     cohens_h,
+    n_req_vs_mde,
     power_curve,
     power_for_proportions,
     sample_size_proportions,
@@ -102,3 +103,16 @@ def test_power_curve_monotonic_and_bounded() -> None:
     powers = power_curve(P0, P0 + MDE, grid)
     assert np.all(np.diff(powers) >= 0)
     assert powers.min() > 0.05 and powers.max() <= 1.0
+
+
+def test_n_req_vs_mde_matches_scalar_formula() -> None:
+    mdes = np.array([0.001, 0.005, 0.010])
+    ns = n_req_vs_mde(P0, mdes)
+    assert ns.tolist() == [sample_size_proportions(P0, m) for m in mdes]
+    # Recognisable anchors from the sensitivity table in notebook 02.
+    assert ns[0] == 283_523 and ns[1] == 12_547 and ns[2] == 3_512
+
+
+def test_n_req_vs_mde_decreasing_with_mde() -> None:
+    ns = n_req_vs_mde(P0, np.arange(0.001, 0.011, 0.001))
+    assert np.all(np.diff(ns) < 0)

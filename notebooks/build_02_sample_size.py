@@ -45,7 +45,7 @@ CELLS: list[dict[str, str]] = [
             "import matplotlib.pyplot as plt\n"
             "import seaborn as sns\n"
             "sns.set_theme(style='whitegrid')\n"
-            "from src.inference import sample_size_proportions, power_curve, power_for_proportions, cohens_h\n"
+            "from src.inference import sample_size_proportions, n_req_vs_mde, power_curve, power_for_proportions, cohens_h\n"
             "P0, MDE, ALPHA, POWER = 0.0179, 0.005, 0.05, 0.80\n"
             "PSA_N, AD_N = 23_524, 564_577\n"
             "n_req = sample_size_proportions(P0, MDE)\n"
@@ -94,7 +94,7 @@ CELLS: list[dict[str, str]] = [
         "type": "code",
         "source": (
             "mdes = np.arange(0.001, 0.0201, 0.00025)\n"
-            "ns = np.array([sample_size_proportions(P0, m) for m in mdes])\n"
+            "ns = n_req_vs_mde(P0, mdes)\n"
             "fig, ax = plt.subplots(figsize=(8, 4.5))\n"
             "ax.semilogy(mdes * 100, ns, lw=2, color='#4C72B0')\n"
             "ax.axhline(PSA_N, ls='--', color='#DD8452', lw=1)\n"
