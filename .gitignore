@@ -17,6 +17,9 @@ __pycache__/
 .coverage
 .coverage.*
 
+# Editable-install metadata
+*.egg-info/
+
 # Raw dataset is a 22 MB download from Kaggle; keep the repo lean,
 # source is documented in data/README.md
 data/*.csv
